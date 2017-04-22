@@ -49,9 +49,12 @@ class Typer {
       this.periodDelays = periodDelays;
       this.reset();
       this.isPlaying = true;
-
-      window.setTimeout( () => {this.expandTextOrFinish()}, this.characterDelay);
+      this.scheduleNextCharacter();
     }
+  }
+
+  scheduleNextCharacter() {
+      window.setTimeout( () => {this.expandTextOrFinish()}, this.characterDelay * 1000);    
   }
 
   hasNextCharacter() {
@@ -63,6 +66,7 @@ class Typer {
     const hasNext = this.hasNextCharacter();
     if(hasNext) {
       this.addNextCharacter();
+      this.scheduleNextCharacter();
     }
   }
 
@@ -87,7 +91,7 @@ class Typer {
   getNextCharacter() {
     var lineIndex = this.getNextCharacterLineIndex();
     var characterInLineIndex = this.writtenText[lineIndex].length;
-    return this.textLines[characterInLineIndex];
+    return this.textLines[lineIndex][characterInLineIndex];
   }
 
   getRenderTopLeft(context) {
