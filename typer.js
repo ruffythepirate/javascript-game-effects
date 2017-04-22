@@ -10,18 +10,28 @@ class Cursor {
 
   constructor (blinkInterval) {
     this.blinkInterval = blinkInterval;
+
+    this.isShown = true;
   }
 
   start() {
-
+    this.stop();
+    this.blinkIntervalHandle = window.setInterval(() => {this.isShown = !this.isShown}, this.blinkInterval * 1000);
   }
 
   stop () {
-    
+    if(this.blinkIntervalHandle) {
+      clearInterval(this.blinkIntervalHandle);      
+    }
   }
 
   render(x, y, context) {
-
+    if(!this.isShown) {
+      return;
+    }
+    const width = context.measureText('M').width;
+    const height = width* 1.2;
+    context.fillRect(x, y - height + 2, width, height );
   }
 }
 
@@ -49,6 +59,7 @@ class Typer {
       this.periodDelays = periodDelays;
       this.reset();
       this.isPlaying = true;
+      this.cursor.start();
       this.scheduleNextCharacter();
     }
   }
@@ -117,6 +128,9 @@ class Typer {
     if(!this.writtenText) {
       return;
     }
+
+    context.clearRect(0,0,this.container.width, this.container.height);
+
     context.fontStyle = this.fontStyle;
 
 
@@ -136,10 +150,10 @@ class Typer {
       context.fillText(augmentedLine.line, topLeft.x, topLeft.y + augmentedLine.yOffset);
     });
 
-    const lastLineWidth = context.measureText( linesToRender[linesToRender.length - 1]).width;
+    const lastLineWidth = context.measureText( linesToRender[linesToRender.length - 1].line).width;
     const lastLineYOffset = linesToRender[linesToRender.length - 1].yOffset;
 
-    this.cursor.render(topLeft.x + lastLineWidth, topLeft.y + lastLineYOffset, context);
+    this.cursor.render(topLeft.x + lastLineWidth + 2 , topLeft.y + lastLineYOffset, context);
 
   }
 

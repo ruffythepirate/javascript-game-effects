@@ -41,7 +41,7 @@ window.onEachFrame(Game.run);
 
 typer.play( [
   'Hello world!', 'On a second line as well.'],
-  1);
+  0.3);
 
 function introLoop() {
   typer.render(foregroundContext);
