@@ -40,7 +40,7 @@ const Game = {
 window.onEachFrame(Game.run);
 
 typer.play( [
-  'Hello world!'],
+  'Hello world!', 'On a second line as well.'],
   1);
 
 function introLoop() {

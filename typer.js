@@ -90,6 +90,9 @@ class Typer {
 
   getNextCharacter() {
     var lineIndex = this.getNextCharacterLineIndex();
+    if(lineIndex === this.writtenText.length) {
+      this.writtenText.push('');
+    }
     var characterInLineIndex = this.writtenText[lineIndex].length;
     return this.textLines[lineIndex][characterInLineIndex];
   }
